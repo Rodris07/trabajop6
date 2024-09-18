@@ -48,7 +48,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jCbx_Categoriacarga = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jSpinner_stock = new javax.swing.JSpinner();
+        jSpinner_stock = new javax.swing.JSpinner<>();
         jBt_buscar = new javax.swing.JButton();
         jBt_cerrar = new javax.swing.JButton();
         jBt_Eliminar = new javax.swing.JButton();
@@ -59,10 +59,8 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         setTitle("De Todo S.A.: Productos");
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 28)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
         jLabel1.setText("Gestión de Productos");
 
-        jLabel2.setForeground(new java.awt.Color(0, 0, 0));
         jLabel2.setText("Filtrar por Categoría:");
 
         jCbx_Categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -88,21 +86,16 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(jTable_Productos);
 
-        jLabel3.setForeground(new java.awt.Color(0, 0, 0));
         jLabel3.setText("Código:");
 
-        jLabel4.setForeground(new java.awt.Color(0, 0, 0));
         jLabel4.setText("Descripción:");
 
-        jLabel5.setForeground(new java.awt.Color(0, 0, 0));
         jLabel5.setText("Precio:");
 
         jCbx_Categoriacarga.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel6.setForeground(new java.awt.Color(0, 0, 0));
         jLabel6.setText("Rubro:");
 
-        jLabel7.setForeground(new java.awt.Color(0, 0, 0));
         jLabel7.setText("Stock:");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -265,25 +258,23 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBt_cerrarActionPerformed
 
     private void jBt_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_guardarActionPerformed
-//        if (!validarCamposVacios()) {
-//            int codigo = Integer.parseInt(jTxt_codigo.getText());
-//            String descripcion = jTxt_descripcion.getText();
-//            double precio = Double.parseDouble(jTxt_precio.getText());
-//            String rubro = jCbx_Categoriacarga.getToolTipText();
-//            int stock = Integer.parseInt(jSpinner_stock.getText());
-//
-//            Producto productoNuevo = new Producto(codigo, descripcion, precio, rubro, stock);
-//            this.listaProductos.add(productoNuevo);
-//            jBt_nuevo.setEnabled(true);
-//            jTxt_codigo.setText("");
-//            jTxt_descripcion.setText("");
-//            jTxt_precio.setText("");
-//            jCbx_Categoriacarga.setText("");
-//            jSpinner_stock.setText("");
-//        } else {
-//            JOptionPane.showMessageDialog(this, "Debe llenar todos los campos");
-//
-//        }
+        if (!validarCamposVacios()) {
+            int codigo = Integer.parseInt(jTxt_codigo.getText());
+            String descripcion = jTxt_descripcion.getText();
+            double precio = Double.parseDouble(jTxt_precio.getText());
+            int stock =  jSpinner_stock.getValue()  ;
+
+            Producto productoNuevo = new Producto(codigo, descripcion, precio, stock);
+            this.listaProductos.add(productoNuevo);
+            jBt_nuevo.setEnabled(true);
+            jTxt_codigo.setText("");
+            jTxt_descripcion.setText("");
+            jTxt_precio.setText("");
+            jSpinner_stock.setValue("");
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe llenar todos los campos");
+
+        }
     }//GEN-LAST:event_jBt_guardarActionPerformed
 
     private void jBt_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_nuevoActionPerformed
@@ -323,7 +314,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner jSpinner_stock;
+    private javax.swing.JSpinner<Integer> jSpinner_stock;
     private javax.swing.JTable jTable_Productos;
     private javax.swing.JTextField jTxt_codigo;
     private javax.swing.JTextField jTxt_descripcion;
