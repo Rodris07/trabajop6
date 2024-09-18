@@ -1,4 +1,5 @@
 
+import java.util.HashSet;
 import java.util.TreeSet;
 
 
@@ -12,13 +13,15 @@ public class Producto {
     private String descripcion;
     private double precio;
     private int stock;
-    //private TreeSet <String>listaProductos= new TreeSet<>();
+    
+  
 
-    public Producto(int codigo, String descripcion, double precio, int stock) {
+    public Producto(int codigo, String descripcion, double precio, int stock ) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.precio = precio;
         this.stock = stock;
+        
     }
 
     public int getCodigo() {
