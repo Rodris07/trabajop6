@@ -1,5 +1,6 @@
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.TreeSet;
 
 
@@ -8,7 +9,7 @@ import java.util.TreeSet;
  *
  * @author Jon_kevin27
  */
-public class Producto {
+public class Producto implements Comparable<Producto> {
     private int codigo;
     private String descripcion;
     private double precio;
@@ -56,21 +57,40 @@ public class Producto {
         this.stock = stock;
     }
 
-//    //public Set<String> getListaProductos() {
-//        return listaProductos;
-//    }
-//
-//    public void setListaProductos(Set<String> listaProductos) {
-//        this.listaProductos = listaProductos;
-//    }
-    
-    public void agregarProducto (Producto p){
-        //listaProductos.add(p);
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 19 * hash + this.codigo;
+        return hash;
     }
-    
-    public void eliminarProducto (){
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Producto other = (Producto) obj;
+        return this.codigo == other.codigo;
+    }
+
+    @Override public int compareTo(Producto other) { 
+        if(codigo == other.codigo){
+            return 0;
+           
+        }else if (codigo > other.codigo){
+        return 1;
+        }else {
+            return -1;
+        }
         
-    }
+    }    
+    
     
     
 }

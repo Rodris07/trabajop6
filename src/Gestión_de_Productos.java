@@ -1,6 +1,7 @@
 
 
 
+import java.util.HashSet;
 import java.util.TreeSet;
 import javax.swing.JOptionPane;
 
@@ -9,8 +10,8 @@ import javax.swing.JOptionPane;
  * @author Jon_kevin27
  */
 public class Gestión_de_Productos extends javax.swing.JInternalFrame {
-    
-    private TreeSet <Producto>listaProductos;
+    private HashSet <String> rubro = new HashSet();
+    private TreeSet <Producto>listaProductos= new TreeSet();
     /**
      * Creates new form Gestión_de_Productos
      */
@@ -21,6 +22,12 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jTxt_precio.setEnabled(false);
         jCbx_Categoriacarga.setEnabled(false);
         jSpinner_stock.setEnabled(false);
+        jBt_buscar.setEnabled(true);
+        jBt_cerrar.setEnabled(true);
+        jBt_actualizar.setEnabled(false);
+        jBt_guardar.setEnabled(false);
+        jBt_Eliminar.setEnabled(false);
+        jBt_nuevo.setEnabled(true);
         listaProductos= lista;
     }
 
@@ -97,6 +104,11 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jLabel5.setText("Precio:");
 
         jCbx_Categoriacarga.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jCbx_Categoriacarga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCbx_CategoriacargaActionPerformed(evt);
+            }
+        });
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel6.setText("Rubro:");
@@ -223,7 +235,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jBt_buscar, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
+                            .addComponent(jBt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 65, Short.MAX_VALUE)
                             .addComponent(jBt_cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
@@ -297,14 +309,17 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jBt_buscar.setEnabled(true);
         jBt_cerrar.setEnabled(true);
         jBt_actualizar.setEnabled(false);
-        jBt_guardar.setEnabled(false);
+        jBt_guardar.setEnabled(true);
         jBt_Eliminar.setEnabled(false);
-        jBt_nuevo.setEnabled(true);
+        jBt_nuevo.setEnabled(false);
     }//GEN-LAST:event_jBt_nuevoActionPerformed
 
+    private void jCbx_CategoriacargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbx_CategoriacargaActionPerformed
+        
+    }//GEN-LAST:event_jCbx_CategoriacargaActionPerformed
+
     public boolean validarCamposVacios() {
-//        return jTxt_codigo.setText().equals("") || jTxt_descripcion.setText().equals("") || jTxt_precio.setText().equals("")|| jCbx_Categoriacarga.setText().equals("")|| jjSpinner_stock.setText().equals("");
-                return true;
+        return jTxt_codigo.getText().equals("") || jTxt_descripcion.getText().equals("") || jTxt_precio.getText().equals("")||  jSpinner_stock.getValue().equals("");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

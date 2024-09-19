@@ -9,12 +9,17 @@ import java.util.TreeSet;
  */
 public class MenuPrincipal extends javax.swing.JFrame {
     
-    private TreeSet <Producto>listaProductos= new TreeSet<>();
+    private SupermercadodetodoSA supermercado;
+    private TreeSet <Producto>listaProductos= new TreeSet();
+   
     /**
      * Creates new form MenuPrincipal
      */
     public MenuPrincipal() {
         initComponents();
+        SupermercadodetodoSA supermercado = new SupermercadodetodoSA();
+        this.supermercado= supermercado;
+        listaProductos= supermercado.getListaProductos();
     }
 
     /**
@@ -112,6 +117,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         formgestion.setVisible(true);
         jDesktopPane1.add(formgestion);
         
+        
 
     }//GEN-LAST:event_jMenuItem_gestiondeproductosActionPerformed
 
@@ -150,6 +156,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new MenuPrincipal().setVisible(true);
+                
+                
+
+                
+                
             }
         });
     }
