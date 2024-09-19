@@ -10,11 +10,11 @@ import javax.swing.JOptionPane;
  */
 public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     
-    private TreeSet <String>listaProductos;
+    private TreeSet <Producto>listaProductos;
     /**
      * Creates new form Gestión_de_Productos
      */
-    public Gestión_de_Productos(TreeSet <String>lista) {
+    public Gestión_de_Productos(TreeSet <Producto>lista) {
         initComponents();
         jTxt_codigo.setEnabled(false);
         jTxt_descripcion.setEnabled(false);
@@ -48,7 +48,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jCbx_Categoriacarga = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jSpinner_stock = new javax.swing.JSpinner<>();
+        jSpinner_stock = new javax.swing.JSpinner();
         jBt_buscar = new javax.swing.JButton();
         jBt_cerrar = new javax.swing.JButton();
         jBt_Eliminar = new javax.swing.JButton();
@@ -273,7 +273,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
             int codigo = Integer.parseInt(jTxt_codigo.getText());
             String descripcion = jTxt_descripcion.getText();
             double precio = Double.parseDouble(jTxt_precio.getText());
-            int stock =  jSpinner_stock.getValue()  ;
+            int stock = (int) jSpinner_stock.getValue();
 
             Producto productoNuevo = new Producto(codigo, descripcion, precio, stock);
             this.listaProductos.add(productoNuevo);
@@ -325,7 +325,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JSpinner<Integer> jSpinner_stock;
+    private javax.swing.JSpinner jSpinner_stock;
     private javax.swing.JTable jTable_Productos;
     private javax.swing.JTextField jTxt_codigo;
     private javax.swing.JTextField jTxt_descripcion;

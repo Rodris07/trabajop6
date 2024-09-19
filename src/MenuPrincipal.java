@@ -9,7 +9,7 @@ import java.util.TreeSet;
  */
 public class MenuPrincipal extends javax.swing.JFrame {
     
-    private TreeSet <String>listaProductos= new TreeSet<>();
+    private TreeSet <Producto>listaProductos= new TreeSet<>();
     /**
      * Creates new form MenuPrincipal
      */
