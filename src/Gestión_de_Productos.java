@@ -15,7 +15,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     /**
      * Creates new form Gestión_de_Productos
      */
-    public Gestión_de_Productos(TreeSet <Producto>lista) {
+    public Gestión_de_Productos(TreeSet <Producto>lista, HashSet <String> rubro) {
         initComponents();
         jTxt_codigo.setEnabled(false);
         jTxt_descripcion.setEnabled(false);
@@ -29,6 +29,9 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jBt_Eliminar.setEnabled(false);
         jBt_nuevo.setEnabled(true);
         listaProductos= lista;
+        this.rubro= rubro;
+        cargarCbx();
+        
     }
 
     /**
@@ -71,8 +74,6 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Filtrar por Categoría:");
 
-        jCbx_Categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jTable_Productos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -103,7 +104,6 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Precio:");
 
-        jCbx_Categoriacarga.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jCbx_Categoriacarga.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCbx_CategoriacargaActionPerformed(evt);
@@ -235,7 +235,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jBt_buscar, javax.swing.GroupLayout.PREFERRED_SIZE, 65, Short.MAX_VALUE)
+                            .addComponent(jBt_buscar, javax.swing.GroupLayout.DEFAULT_SIZE, 65, Short.MAX_VALUE)
                             .addComponent(jBt_cerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
@@ -289,11 +289,12 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
 
             Producto productoNuevo = new Producto(codigo, descripcion, precio, stock);
             this.listaProductos.add(productoNuevo);
+            System.out.println(listaProductos);
             jBt_nuevo.setEnabled(true);
             jTxt_codigo.setText("");
             jTxt_descripcion.setText("");
             jTxt_precio.setText("");
-            jSpinner_stock.setValue("");
+            jSpinner_stock.setValue(0);
         } else {
             JOptionPane.showMessageDialog(this, "Debe llenar todos los campos");
 
@@ -315,11 +316,19 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBt_nuevoActionPerformed
 
     private void jCbx_CategoriacargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbx_CategoriacargaActionPerformed
-        
+    
     }//GEN-LAST:event_jCbx_CategoriacargaActionPerformed
 
     public boolean validarCamposVacios() {
         return jTxt_codigo.getText().equals("") || jTxt_descripcion.getText().equals("") || jTxt_precio.getText().equals("")||  jSpinner_stock.getValue().equals("");
+        
+    }
+    public void cargarCbx(){
+           for (String string : rubro) {
+             jCbx_Categoriacarga.addItem(string);
+        }   for (String string : rubro) {
+             jCbx_Categoria.addItem(string);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

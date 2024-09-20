@@ -113,7 +113,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void jMenuItem_gestiondeproductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_gestiondeproductosActionPerformed
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
-        Gestión_de_Productos formgestion = new Gestión_de_Productos(listaProductos);
+        Gestión_de_Productos formgestion = new Gestión_de_Productos(listaProductos, supermercado.getRubro());
         formgestion.setVisible(true);
         jDesktopPane1.add(formgestion);
         

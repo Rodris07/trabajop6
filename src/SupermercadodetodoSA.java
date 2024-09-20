@@ -48,16 +48,23 @@ public class SupermercadodetodoSA {
     
     
     
-    public void agregarProducto() {
-        
+    public void agregarProducto(Producto p) {
+     this.listaProductos.add(p);
 
     }
 
-    public void eliminarProducto() {
-
+    public void eliminarProducto(Producto p) {
+       this.listaProductos.remove(p);
     }
 
-    public void modificarProducto() {
-
+    public void modificarProducto(Producto p, int codigo, String descripcion, String rubro, double precio, int stock ) {
+        for (Producto elemento : listaProductos) {
+            if (p.getCodigo()==elemento.getCodigo()) {
+                elemento.setCodigo(codigo);
+                elemento.setDescripcion(descripcion);
+                elemento.setPrecio(precio);
+                elemento.setStock(stock);
+            }
+        }
     }
 }
