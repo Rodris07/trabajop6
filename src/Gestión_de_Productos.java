@@ -1,6 +1,4 @@
 
-
-
 import java.util.HashSet;
 import java.util.TreeSet;
 import javax.swing.JOptionPane;
@@ -11,13 +9,15 @@ import javax.swing.table.DefaultTableModel;
  * @author Jon_kevin27
  */
 public class Gestión_de_Productos extends javax.swing.JInternalFrame {
-    private HashSet <String> rubro = new HashSet();
-    private TreeSet <Producto>listaProductos= new TreeSet();
+
+    private HashSet<String> rubro = new HashSet();
+    private TreeSet<Producto> listaProductos = new TreeSet();
     private DefaultTableModel modelo = new DefaultTableModel();
+
     /**
      * Creates new form Gestión_de_Productos
      */
-    public Gestión_de_Productos(TreeSet <Producto>lista, HashSet <String> rubro) {
+    public Gestión_de_Productos(TreeSet<Producto> lista, HashSet<String> rubro) {
         initComponents();
         armarCabecera();
         jTxt_codigo.setEnabled(false);
@@ -31,10 +31,13 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jBt_guardar.setEnabled(false);
         jBt_Eliminar.setEnabled(false);
         jBt_nuevo.setEnabled(true);
-        listaProductos= lista;
-        this.rubro= rubro;
+        listaProductos = lista;
+        this.rubro = rubro;
         cargarCbx();
-        
+        for (Producto elemento : listaProductos) {
+            cargarDatos(elemento);
+        }
+
     }
 
     /**
@@ -77,6 +80,13 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Filtrar por Categoría:");
+
+        jCbx_Categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos" }));
+        jCbx_Categoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jCbx_CategoriaActionPerformed(evt);
+            }
+        });
 
         jTable_Productos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -278,7 +288,36 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_buscarActionPerformed
-               
+        System.out.println(jTable_Productos.getSelectedRow());
+        int filaSeleccionada = jTable_Productos.getSelectedRow();
+        modelo.getValueAt(filaSeleccionada, 0);
+        if (filaSeleccionada != -1) {
+            int codigo = (int) modelo.getValueAt(filaSeleccionada, 0);
+            for (Producto producto : listaProductos) {
+                if (codigo == producto.getCodigo()) {
+                    jTxt_codigo.setText(String.valueOf(producto.getCodigo()));
+                    jTxt_descripcion.setText(producto.getDescripcion());
+                    jTxt_precio.setText(String.valueOf(producto.getPrecio()));
+                    jCbx_Categoriacarga.setSelectedItem(producto.getCategoria());
+                    jSpinner_stock.setValue(producto.getStock());
+                }
+            }
+        } else if (jTxt_codigo.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar algun producto o ingresar un codigo");
+        } else {
+            if (codigoOk(Integer.parseInt(jTxt_codigo.getText()))) {
+         
+            }
+        }
+        jTxt_codigo.setEnabled(true);
+        jTxt_descripcion.setEnabled(true);
+        jTxt_precio.setEnabled(true);
+        jCbx_Categoriacarga.setEnabled(true);
+        jSpinner_stock.setEnabled(true);
+        jBt_actualizar.setEnabled(true);
+        jBt_guardar.setEnabled(false);
+        jBt_Eliminar.setEnabled(true);
+        jBt_nuevo.setEnabled(false);
     }//GEN-LAST:event_jBt_buscarActionPerformed
 
     private void jBt_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_cerrarActionPerformed
@@ -291,8 +330,9 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
             String descripcion = jTxt_descripcion.getText();
             double precio = Double.parseDouble(jTxt_precio.getText());
             int stock = (int) jSpinner_stock.getValue();
+            String categoria = (String) jCbx_Categoriacarga.getSelectedItem();
 
-            Producto productoNuevo = new Producto(codigo, descripcion, precio, stock);
+            Producto productoNuevo = new Producto(codigo, descripcion, precio, categoria, stock);
             cargarDatos(productoNuevo);
             this.listaProductos.add(productoNuevo);
             System.out.println(listaProductos);
@@ -322,18 +362,39 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBt_nuevoActionPerformed
 
     private void jCbx_CategoriacargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbx_CategoriacargaActionPerformed
-    
+
     }//GEN-LAST:event_jCbx_CategoriacargaActionPerformed
 
+    private void jCbx_CategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbx_CategoriaActionPerformed
+        limpiarTabla();
+        System.out.println(((String) jCbx_Categoria.getSelectedItem()).equals("Todos"));
+        if (((String) jCbx_Categoria.getSelectedItem()).equals("Todos")) {
+            for (Producto elemento : listaProductos) {
+                cargarDatos(elemento);
+            }
+
+        } else {
+            for (Producto elemento : listaProductos) {
+                if (elemento.getCategoria().equals((String) jCbx_Categoria.getSelectedItem())) {
+                    System.out.println((elemento.getCategoria().equals((String) jCbx_Categoria.getSelectedItem())));
+                    cargarDatos(elemento);
+                }
+            }
+
+        }
+    }//GEN-LAST:event_jCbx_CategoriaActionPerformed
+
     public boolean validarCamposVacios() {
-        return jTxt_codigo.getText().equals("") || jTxt_descripcion.getText().equals("") || jTxt_precio.getText().equals("")||  jSpinner_stock.getValue().equals("");
-        
+        return jTxt_codigo.getText().equals("") || jTxt_descripcion.getText().equals("") || jTxt_precio.getText().equals("") || jSpinner_stock.getValue().equals("");
+
     }
-    public void cargarCbx(){
-           for (String string : rubro) {
-             jCbx_Categoriacarga.addItem(string);
-        }   for (String string : rubro) {
-             jCbx_Categoria.addItem(string);
+
+    public void cargarCbx() {
+        for (String string : rubro) {
+            jCbx_Categoriacarga.addItem(string);
+        }
+        for (String string : rubro) {
+            jCbx_Categoria.addItem(string);
         }
     }
 
@@ -361,17 +422,40 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTxt_descripcion;
     private javax.swing.JTextField jTxt_precio;
     // End of variables declaration//GEN-END:variables
-    private void armarCabecera (){
-    modelo.addColumn("Codigo");
-    modelo.addColumn("Descripcion");
-    modelo.addColumn("Precio");
-    modelo.addColumn("Categoria");
-    modelo.addColumn("Stock");
-    jTable_Productos.setModel(modelo);
-    
-    }
-    private void cargarDatos (Producto producto ){
-        modelo.addRow(new Object []{producto.getCodigo(), producto.getDescripcion(), producto.getPrecio(), producto.getStock()});
+    private void armarCabecera() {
+        modelo.addColumn("Codigo");
+        modelo.addColumn("Descripcion");
+        modelo.addColumn("Precio");
+        modelo.addColumn("Categoria");
+        modelo.addColumn("Stock");
+        jTable_Productos.setModel(modelo);
 
     }
-} 
+
+    private void cargarDatos(Producto producto) {
+        modelo.addRow(new Object[]{producto.getCodigo(), producto.getDescripcion(), producto.getPrecio(), producto.getCategoria(), producto.getStock()});
+
+    }
+
+    private void limpiarTabla() {
+        int filas = modelo.getRowCount();
+        for (int i = filas - 1; i >= 0; i--) {
+            modelo.removeRow(i);
+        }
+
+    }
+
+    private boolean codigoOk(int codigo) {
+        boolean valido = true;
+        for (Producto producto : listaProductos) {
+            if (producto.getCodigo() == codigo) {
+                JOptionPane.showMessageDialog(this, "Ya existe un producto con este codigo");
+                valido = false;
+
+            }
+
+        }
+        return valido;
+
+    }
+}
