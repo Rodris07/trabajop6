@@ -13,14 +13,16 @@ public class SupermercadodetodoSA {
     
 
     public SupermercadodetodoSA() {
+     
         rubro.add("Limpieza");
         rubro.add("Perfumería");
         rubro.add("Comestibles");
-        Producto p1 = new Producto(25,"arroz",28,5);
-        Producto p2= new Producto(35,"kevin",500,55);
-        Producto p3= new Producto(48,"lavandina",25,85);
-        Producto p4= new Producto(28,"papa",28,13);
-        Producto p5= new Producto(9,"detergente",36,5);
+        
+        Producto p1 = new Producto(25,"arroz",28, "Comestibles" ,5);
+        Producto p2= new Producto(35,"kevin",500, "Perfumería",55);
+        Producto p3= new Producto(48,"lavandina",25, "Limpieza" ,85);
+        Producto p4= new Producto(28,"papa",28, "Comestibles",13);
+        Producto p5= new Producto(9,"detergente",36,"Limpieza",5);
         listaProductos.add(p1);
         listaProductos.add(p2);
         listaProductos.add(p3);

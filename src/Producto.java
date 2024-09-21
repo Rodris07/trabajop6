@@ -14,13 +14,22 @@ public class Producto implements Comparable<Producto> {
     private String descripcion;
     private double precio;
     private int stock;
-    
+    private String categoria;
+
+    public String getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
+    }
   
 
-    public Producto(int codigo, String descripcion, double precio, int stock ) {
+    public Producto(int codigo, String descripcion, double precio, String categoria, int stock ) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.precio = precio;
+        this.categoria = categoria;
         this.stock = stock;
         
     }
