@@ -4,6 +4,7 @@
 import java.util.HashSet;
 import java.util.TreeSet;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,11 +13,13 @@ import javax.swing.JOptionPane;
 public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     private HashSet <String> rubro = new HashSet();
     private TreeSet <Producto>listaProductos= new TreeSet();
+    private DefaultTableModel modelo = new DefaultTableModel();
     /**
      * Creates new form Gestión_de_Productos
      */
     public Gestión_de_Productos(TreeSet <Producto>lista, HashSet <String> rubro) {
         initComponents();
+        armarCabecera();
         jTxt_codigo.setEnabled(false);
         jTxt_descripcion.setEnabled(false);
         jTxt_precio.setEnabled(false);
@@ -66,6 +69,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jBt_guardar = new javax.swing.JButton();
         jBt_nuevo = new javax.swing.JButton();
 
+        setClosable(true);
         setTitle("De Todo S.A.: Productos");
 
         jLabel1.setFont(new java.awt.Font("Arial", 1, 28)); // NOI18N
@@ -76,6 +80,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
 
         jTable_Productos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
+                {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -273,7 +278,17 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_buscarActionPerformed
-        // TODO add your handling code here:
+        try {  
+        int codigo = Integer.parseInt(jTxt_codigo.getText());
+            String descripcion = jTxt_descripcion.getText();
+            double precio = Double.parseDouble(jTxt_precio.getText());
+            int stock = (int) jSpinner_stock.getValue();
+            Producto produ = new Producto(codigo, descripcion , precio , stock);
+            cargarDatos(produ);
+        } catch (NumberFormatException nf)  { 
+        
+        }
+                 
     }//GEN-LAST:event_jBt_buscarActionPerformed
 
     private void jBt_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_cerrarActionPerformed
@@ -355,4 +370,17 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     private javax.swing.JTextField jTxt_descripcion;
     private javax.swing.JTextField jTxt_precio;
     // End of variables declaration//GEN-END:variables
-}
+    private void armarCabecera (){
+    modelo.addColumn("Codigo");
+    modelo.addColumn("Descripcion");
+    modelo.addColumn("Precio");
+    modelo.addColumn("Categoria");
+    modelo.addColumn("Stock");
+    jTable_Productos.setModel(modelo);
+    
+    }
+    private void cargarDatos (Producto producto ){
+        modelo.addRow(new Object []{producto.getCodigo(), producto.getDescripcion(), producto.getPrecio(), producto.getStock()});
+
+    }
+} 
