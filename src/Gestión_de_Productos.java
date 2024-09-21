@@ -278,17 +278,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_buscarActionPerformed
-        try {  
-        int codigo = Integer.parseInt(jTxt_codigo.getText());
-            String descripcion = jTxt_descripcion.getText();
-            double precio = Double.parseDouble(jTxt_precio.getText());
-            int stock = (int) jSpinner_stock.getValue();
-            Producto produ = new Producto(codigo, descripcion , precio , stock);
-            cargarDatos(produ);
-        } catch (NumberFormatException nf)  { 
-        
-        }
-                 
+               
     }//GEN-LAST:event_jBt_buscarActionPerformed
 
     private void jBt_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_cerrarActionPerformed
@@ -303,6 +293,7 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
             int stock = (int) jSpinner_stock.getValue();
 
             Producto productoNuevo = new Producto(codigo, descripcion, precio, stock);
+            cargarDatos(productoNuevo);
             this.listaProductos.add(productoNuevo);
             System.out.println(listaProductos);
             jBt_nuevo.setEnabled(true);
