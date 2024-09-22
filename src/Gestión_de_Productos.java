@@ -10,17 +10,20 @@ import javax.swing.table.DefaultTableModel;
  */
 public class Gestión_de_Productos extends javax.swing.JInternalFrame {
 
+    private SupermercadodetodoSA supermercado;
     private HashSet<String> rubro = new HashSet();
     private TreeSet<Producto> listaProductos = new TreeSet();
+    private Producto prodSeleccionado; //Para poder actualizar el producto en caso de modificar el código o para poder eliminarlo
+    private boolean productoBuscado; //Para que reconozca los eventos y permita habilitar botón actualizar
     private DefaultTableModel modelo = new DefaultTableModel();
 
     /**
      * Creates new form Gestión_de_Productos
      */
-    public Gestión_de_Productos(TreeSet<Producto> lista, HashSet<String> rubro) {
+    public Gestión_de_Productos(SupermercadodetodoSA supermercado) {
         initComponents();
         armarCabecera();
-        jTxt_codigo.setEnabled(false);
+        jTxt_codigo.setEnabled(true);
         jTxt_descripcion.setEnabled(false);
         jTxt_precio.setEnabled(false);
         jCbx_Categoriacarga.setEnabled(false);
@@ -31,13 +34,13 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jBt_guardar.setEnabled(false);
         jBt_Eliminar.setEnabled(false);
         jBt_nuevo.setEnabled(true);
-        listaProductos = lista;
-        this.rubro = rubro;
+        this.supermercado = supermercado;
+        listaProductos = supermercado.getListaProductos();
+        this.rubro = supermercado.getRubro();
         cargarCbx();
-        for (Producto elemento : listaProductos) {
-            cargarDatos(elemento);
-        }
-
+        jCbx_Categoriacarga.setSelectedIndex(-1);
+        jCbx_Categoria.setSelectedIndex(0);
+        recargarTabla();
     }
 
     /**
@@ -113,15 +116,33 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel3.setText("Código:");
 
+        jTxt_descripcion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTxt_descripcionKeyTyped(evt);
+            }
+        });
+
+        jTxt_codigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTxt_codigoKeyTyped(evt);
+            }
+        });
+
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Descripción:");
+
+        jTxt_precio.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jTxt_precioKeyTyped(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel5.setText("Precio:");
 
-        jCbx_Categoriacarga.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCbx_CategoriacargaActionPerformed(evt);
+        jCbx_Categoriacarga.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jCbx_CategoriacargaItemStateChanged(evt);
             }
         });
 
@@ -130,6 +151,12 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel7.setText("Stock:");
+
+        jSpinner_stock.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jSpinner_stockStateChanged(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -157,17 +184,14 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(11, 11, 11)
-                        .addComponent(jLabel3))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jTxt_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTxt_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel4))))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTxt_codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTxt_descripcion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTxt_precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -199,9 +223,19 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
 
         jBt_Eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/icons8-eliminar-50.png"))); // NOI18N
         jBt_Eliminar.setText("Eliminar");
+        jBt_Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBt_EliminarActionPerformed(evt);
+            }
+        });
 
         jBt_actualizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Doble visto.png"))); // NOI18N
         jBt_actualizar.setText("Actualizar");
+        jBt_actualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBt_actualizarActionPerformed(evt);
+            }
+        });
 
         jBt_guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Guardarc.png"))); // NOI18N
         jBt_guardar.setText("Guardar");
@@ -290,34 +324,47 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     private void jBt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_buscarActionPerformed
         System.out.println(jTable_Productos.getSelectedRow());
         int filaSeleccionada = jTable_Productos.getSelectedRow();
-        modelo.getValueAt(filaSeleccionada, 0);
+
+//        modelo.getValueAt(filaSeleccionada, 0); //Tiraba el error porque se ejecutaba cuando fila seleccionada era -1 entonces no podía encontrar un valor para esa fila.
         if (filaSeleccionada != -1) {
-            int codigo = (int) modelo.getValueAt(filaSeleccionada, 0);
+            int codigoTabla = (int) modelo.getValueAt(filaSeleccionada, 0);
             for (Producto producto : listaProductos) {
-                if (codigo == producto.getCodigo()) {
-                    jTxt_codigo.setText(String.valueOf(producto.getCodigo()));
-                    jTxt_descripcion.setText(producto.getDescripcion());
-                    jTxt_precio.setText(String.valueOf(producto.getPrecio()));
-                    jCbx_Categoriacarga.setSelectedItem(producto.getCategoria());
-                    jSpinner_stock.setValue(producto.getStock());
+                if (codigoTabla == producto.getCodigo()) {
+                    cargarCamposProducto(producto);
+                    activarTodosCampos();
+                    jBt_guardar.setEnabled(false);
+                    jBt_Eliminar.setEnabled(true);
+                    jBt_actualizar.setEnabled(false);
+                    jBt_nuevo.setEnabled(true);
+                    this.prodSeleccionado = producto;
+                    this.productoBuscado = true;
                 }
             }
         } else if (jTxt_codigo.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Debe seleccionar algun producto o ingresar un codigo");
         } else {
-            if (codigoOk(Integer.parseInt(jTxt_codigo.getText()))) {
-         
+            try {
+                int codigoIngresado = Integer.parseInt(jTxt_codigo.getText());
+                if (codigoExistente(codigoIngresado)) {
+                    for (Producto producto : listaProductos) {
+                        if (codigoIngresado == producto.getCodigo()) {
+                            cargarCamposProducto(producto);
+                            activarTodosCampos();
+                            jBt_guardar.setEnabled(false);
+                            jBt_Eliminar.setEnabled(true);
+                            jBt_actualizar.setEnabled(false);
+                            jBt_nuevo.setEnabled(true);
+                            this.prodSeleccionado = producto;
+                            this.productoBuscado = true;
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "No existe un producto con el código ingresado");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Debe ingresar sólo números en el código");
             }
         }
-        jTxt_codigo.setEnabled(true);
-        jTxt_descripcion.setEnabled(true);
-        jTxt_precio.setEnabled(true);
-        jCbx_Categoriacarga.setEnabled(true);
-        jSpinner_stock.setEnabled(true);
-        jBt_actualizar.setEnabled(true);
-        jBt_guardar.setEnabled(false);
-        jBt_Eliminar.setEnabled(true);
-        jBt_nuevo.setEnabled(false);
     }//GEN-LAST:event_jBt_buscarActionPerformed
 
     private void jBt_cerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_cerrarActionPerformed
@@ -325,45 +372,43 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jBt_cerrarActionPerformed
 
     private void jBt_guardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_guardarActionPerformed
-        if (!validarCamposVacios()) {
-            int codigo = Integer.parseInt(jTxt_codigo.getText());
-            String descripcion = jTxt_descripcion.getText();
-            double precio = Double.parseDouble(jTxt_precio.getText());
-            int stock = (int) jSpinner_stock.getValue();
-            String categoria = (String) jCbx_Categoriacarga.getSelectedItem();
-
-            Producto productoNuevo = new Producto(codigo, descripcion, precio, categoria, stock);
-            cargarDatos(productoNuevo);
-            this.listaProductos.add(productoNuevo);
-            System.out.println(listaProductos);
-            jBt_nuevo.setEnabled(true);
-            jTxt_codigo.setText("");
-            jTxt_descripcion.setText("");
-            jTxt_precio.setText("");
-            jSpinner_stock.setValue(0);
-        } else {
-            JOptionPane.showMessageDialog(this, "Debe llenar todos los campos");
-
+        try {
+            if (!validarCamposVacios()) {
+                int codigo = Integer.parseInt(jTxt_codigo.getText());
+                String descripcion = jTxt_descripcion.getText();
+                double precio = Double.parseDouble(jTxt_precio.getText());
+                int stock = (int) jSpinner_stock.getValue();
+                String categoria = (String) jCbx_Categoriacarga.getSelectedItem();
+                if (!codigoExistente(codigo)) {
+                    Producto productoNuevo = new Producto(codigo, descripcion, precio, categoria, stock);
+                    supermercado.agregarProducto(productoNuevo);
+                    jBt_nuevo.setEnabled(true);
+                    vaciarCamposProducto();
+                    recargarTabla();
+                    jBt_guardar.setEnabled(false);
+                    JOptionPane.showMessageDialog(this, "Se agregó un producto (" + codigo + " - " + descripcion + ") a la lista");
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ya existe un producto con el código indicado");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Debe llenar todos los campos");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Código, precio y stock sólo pueden ser números");
         }
     }//GEN-LAST:event_jBt_guardarActionPerformed
 
     private void jBt_nuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_nuevoActionPerformed
-        jTxt_codigo.setEnabled(true);
-        jTxt_descripcion.setEnabled(true);
-        jTxt_precio.setEnabled(true);
-        jCbx_Categoriacarga.setEnabled(true);
-        jSpinner_stock.setEnabled(true);
         jBt_buscar.setEnabled(true);
         jBt_cerrar.setEnabled(true);
         jBt_actualizar.setEnabled(false);
         jBt_guardar.setEnabled(true);
         jBt_Eliminar.setEnabled(false);
         jBt_nuevo.setEnabled(false);
+        productoBuscado = false;
+        vaciarCamposProducto();
+        activarTodosCampos();
     }//GEN-LAST:event_jBt_nuevoActionPerformed
-
-    private void jCbx_CategoriacargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbx_CategoriacargaActionPerformed
-
-    }//GEN-LAST:event_jCbx_CategoriacargaActionPerformed
 
     private void jCbx_CategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCbx_CategoriaActionPerformed
         limpiarTabla();
@@ -372,7 +417,6 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
             for (Producto elemento : listaProductos) {
                 cargarDatos(elemento);
             }
-
         } else {
             for (Producto elemento : listaProductos) {
                 if (elemento.getCategoria().equals((String) jCbx_Categoria.getSelectedItem())) {
@@ -380,13 +424,81 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
                     cargarDatos(elemento);
                 }
             }
-
         }
     }//GEN-LAST:event_jCbx_CategoriaActionPerformed
 
+    private void jBt_actualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_actualizarActionPerformed
+        int resp = JOptionPane.showConfirmDialog(this, "¿Desea actualizar los datos del producto seleccionado?");
+        if (resp == 0 && !validarCamposVacios()) {
+            try {
+                int codigo = Integer.parseInt(jTxt_codigo.getText());
+                String descripcion = jTxt_descripcion.getText();
+                Double precio = Double.parseDouble(jTxt_precio.getText());
+                String categoria = (String) jCbx_Categoriacarga.getSelectedItem();
+                int stock = (int) jSpinner_stock.getValue();
+                if (!codigoExistente(codigo)||prodSeleccionado.getCodigo()==codigo) {
+                    this.supermercado.modificarProducto(prodSeleccionado, codigo, descripcion, categoria, precio, stock);
+                    vaciarCamposProducto();
+                    desactivarTodosCampos();
+                    this.productoBuscado = false;
+                    recargarTabla();
+                    jBt_actualizar.setEnabled(false);
+                    jBt_Eliminar.setEnabled(false);
+                    jBt_nuevo.setEnabled(true);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Ya existe un producto con el código indicado");
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Código, precio y stock sólo pueden ser números");
+            }
+        }
+    }//GEN-LAST:event_jBt_actualizarActionPerformed
+
+    private void jSpinner_stockStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jSpinner_stockStateChanged
+        if (productoBuscado) {
+            jBt_actualizar.setEnabled(true);
+        }
+    }//GEN-LAST:event_jSpinner_stockStateChanged
+
+    private void jCbx_CategoriacargaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jCbx_CategoriacargaItemStateChanged
+        if (productoBuscado) {
+            jBt_actualizar.setEnabled(true);
+        }
+    }//GEN-LAST:event_jCbx_CategoriacargaItemStateChanged
+
+    private void jTxt_precioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxt_precioKeyTyped
+        if (productoBuscado) {
+            jBt_actualizar.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTxt_precioKeyTyped
+
+    private void jTxt_descripcionKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxt_descripcionKeyTyped
+        if (productoBuscado) {
+            jBt_actualizar.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTxt_descripcionKeyTyped
+
+    private void jTxt_codigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxt_codigoKeyTyped
+        if (productoBuscado) {
+            jBt_actualizar.setEnabled(true);
+        }
+    }//GEN-LAST:event_jTxt_codigoKeyTyped
+
+    private void jBt_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBt_EliminarActionPerformed
+        int resp = JOptionPane.showConfirmDialog(this, "¿Desea eliminar producto seleccionado?");
+        if (resp == 0 && !validarCamposVacios()) {
+            supermercado.eliminarProducto(this.prodSeleccionado);
+            vaciarCamposProducto();
+            desactivarTodosCampos();
+            this.productoBuscado = false;
+            recargarTabla();
+            jBt_actualizar.setEnabled(false);
+            jBt_Eliminar.setEnabled(false);
+        }
+    }//GEN-LAST:event_jBt_EliminarActionPerformed
+
     public boolean validarCamposVacios() {
         return jTxt_codigo.getText().equals("") || jTxt_descripcion.getText().equals("") || jTxt_precio.getText().equals("") || jSpinner_stock.getValue().equals("");
-
     }
 
     public void cargarCbx() {
@@ -429,7 +541,6 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         modelo.addColumn("Categoria");
         modelo.addColumn("Stock");
         jTable_Productos.setModel(modelo);
-
     }
 
     private void cargarDatos(Producto producto) {
@@ -442,20 +553,63 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
         for (int i = filas - 1; i >= 0; i--) {
             modelo.removeRow(i);
         }
-
     }
 
-    private boolean codigoOk(int codigo) {
-        boolean valido = true;
+    private boolean codigoExistente(int codigo) {
+        boolean valido = false;
         for (Producto producto : listaProductos) {
             if (producto.getCodigo() == codigo) {
-                JOptionPane.showMessageDialog(this, "Ya existe un producto con este codigo");
-                valido = false;
-
+                valido = true;
             }
-
         }
         return valido;
+    }
 
+//    private boolean formatoCodigoOK(int codigo) {
+//        boolean valido = true;
+//        try {
+//            int num = Integer.parseInt(jTxt_codigo.getText());
+//        } catch (NumberFormatException e) {
+//            JOptionPane.showMessageDialog(this, "Debe ingresar sólo números");
+//            valido = false;
+//        }
+//        return valido;
+//    }
+    private void cargarCamposProducto(Producto producto) {
+        jTxt_codigo.setText(String.valueOf(producto.getCodigo()));
+        jTxt_descripcion.setText(producto.getDescripcion());
+        jTxt_precio.setText(String.valueOf(producto.getPrecio()));
+        jCbx_Categoriacarga.setSelectedItem(producto.getCategoria());
+        jSpinner_stock.setValue(producto.getStock());
+    }
+
+    private void vaciarCamposProducto() {
+        jTxt_codigo.setText("");
+        jTxt_descripcion.setText("");
+        jTxt_precio.setText("");
+        jCbx_Categoriacarga.setSelectedIndex(-1);
+        jSpinner_stock.setValue(0);
+    }
+
+    private void activarTodosCampos() {
+        jTxt_codigo.setEnabled(true);
+        jTxt_descripcion.setEnabled(true);
+        jTxt_precio.setEnabled(true);
+        jCbx_Categoriacarga.setEnabled(true);
+        jSpinner_stock.setEnabled(true);
+    }
+
+    private void desactivarTodosCampos() {
+        jTxt_descripcion.setEnabled(false);
+        jTxt_precio.setEnabled(false);
+        jCbx_Categoriacarga.setEnabled(false);
+        jSpinner_stock.setEnabled(false);
+    }
+
+    private void recargarTabla() {
+        limpiarTabla();
+        for (Producto elemento : listaProductos) {
+            cargarDatos(elemento);
+        }
     }
 }

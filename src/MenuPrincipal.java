@@ -10,7 +10,6 @@ import java.util.TreeSet;
 public class MenuPrincipal extends javax.swing.JFrame {
     
     private SupermercadodetodoSA supermercado;
-    private TreeSet <Producto>listaProductos= new TreeSet();
    
     /**
      * Creates new form MenuPrincipal
@@ -19,7 +18,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         initComponents();
         SupermercadodetodoSA supermercado = new SupermercadodetodoSA();
         this.supermercado= supermercado;
-        listaProductos= supermercado.getListaProductos();
     }
 
     /**
@@ -113,7 +111,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void jMenuItem_gestiondeproductosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_gestiondeproductosActionPerformed
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
-        Gestión_de_Productos formgestion = new Gestión_de_Productos(listaProductos, supermercado.getRubro());
+        Gestión_de_Productos formgestion = new Gestión_de_Productos(supermercado);
         formgestion.setVisible(true);
         jDesktopPane1.add(formgestion);
         
