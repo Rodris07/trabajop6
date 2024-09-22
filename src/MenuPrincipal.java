@@ -73,6 +73,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jM_Consultas.setText("Consultas");
 
         jMenuItem_consultapornombre.setText("Consuta por nombre");
+        jMenuItem_consultapornombre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_consultapornombreActionPerformed(evt);
+            }
+        });
         jM_Consultas.add(jMenuItem_consultapornombre);
 
         jMenuItem_consutaporprecio.setText("Consulta por precio");
@@ -84,6 +89,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jM_Consultas.add(jMenuItem_consutaporprecio);
 
         jMenuItem_consultaporrubro.setText("Consulta por Rubro");
+        jMenuItem_consultaporrubro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem_consultaporrubroActionPerformed(evt);
+            }
+        });
         jM_Consultas.add(jMenuItem_consultaporrubro);
 
         jMenuBar1.add(jM_Consultas);
@@ -120,8 +130,28 @@ public class MenuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem_gestiondeproductosActionPerformed
 
     private void jMenuItem_consutaporprecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_consutaporprecioActionPerformed
-        // TODO add your handling code here:
+        jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
+        Listado_Precio formconsprecio = new Listado_Precio(supermercado);
+        formconsprecio.setVisible(true);
+        jDesktopPane1.add(formconsprecio);
     }//GEN-LAST:event_jMenuItem_consutaporprecioActionPerformed
+
+    private void jMenuItem_consultapornombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_consultapornombreActionPerformed
+        jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
+        Listado_Nombre formconsnombre = new Listado_Nombre(supermercado);
+        formconsnombre.setVisible(true);
+        jDesktopPane1.add(formconsnombre);
+    }//GEN-LAST:event_jMenuItem_consultapornombreActionPerformed
+
+    private void jMenuItem_consultaporrubroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_consultaporrubroActionPerformed
+        jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
+        Listado_Rubro formconsrubro = new Listado_Rubro();
+        formconsrubro.setVisible(true);
+        jDesktopPane1.add(formconsrubro);
+    }//GEN-LAST:event_jMenuItem_consultaporrubroActionPerformed
 
     /**
      * @param args the command line arguments
