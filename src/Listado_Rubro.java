@@ -100,7 +100,7 @@ public class Listado_Rubro extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel4.setIcon(new javax.swing.ImageIcon("C:\\Users\\54265\\Documents\\NetBeansProjects\\TrabajoPractico3\\trabajop6\\src\\Imagenes\\Busqueda.png")); // NOI18N
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Busqueda.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

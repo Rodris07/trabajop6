@@ -62,7 +62,7 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                       <Component id="jLabel4" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="52" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                   </Group>
               </Group>
               <Component id="jScrollPane1" min="-2" pref="318" max="-2" attributes="0"/>
@@ -134,7 +134,7 @@
     <Component class="javax.swing.JLabel" name="jLabel4">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="2" name="C:\Users\54265\Documents\NetBeansProjects\TrabajoPractico3\trabajop6\src\Imagenes\Busqueda.png"/>
+          <Image iconType="3" name="/Imagenes/Busqueda.png"/>
         </Property>
       </Properties>
     </Component>

@@ -63,7 +63,7 @@ public class Listado_Nombre extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTable_listadopornombre);
 
-        jLabel3.setIcon(new javax.swing.ImageIcon("C:\\Users\\54265\\Documents\\NetBeansProjects\\TrabajoPractico3\\trabajop6\\src\\Imagenes\\Busqueda.png")); // NOI18N
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/Busqueda.png"))); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);

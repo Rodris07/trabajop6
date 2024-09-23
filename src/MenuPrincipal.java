@@ -1,8 +1,5 @@
-
-
 import java.awt.Graphics;
 import java.awt.Image;
-import java.util.TreeSet;
 import javax.swing.ImageIcon;
 
 
@@ -190,12 +187,7 @@ public class MenuPrincipal extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new MenuPrincipal().setVisible(true);
-                
-                
-
-                
-                
+                new MenuPrincipal().setVisible(true);                         
             }
         });
     }

@@ -1,15 +1,10 @@
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.TreeSet;
-
-
-
 /**
  *
  * @author Jon_kevin27
  */
 public class Producto implements Comparable<Producto> {
+
     private int codigo;
     private String descripcion;
     private double precio;
@@ -23,15 +18,13 @@ public class Producto implements Comparable<Producto> {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
-  
 
-    public Producto(int codigo, String descripcion, double precio, String categoria, int stock ) {
+    public Producto(int codigo, String descripcion, double precio, String categoria, int stock) {
         this.codigo = codigo;
         this.descripcion = descripcion;
         this.precio = precio;
         this.categoria = categoria;
         this.stock = stock;
-        
     }
 
     public int getCodigo() {
@@ -88,24 +81,19 @@ public class Producto implements Comparable<Producto> {
         return this.codigo == other.codigo;
     }
 
-    @Override public int compareTo(Producto other) { 
-        if(codigo == other.codigo){
+    @Override
+    public int compareTo(Producto other) {
+        if (codigo == other.codigo) {
             return 0;
-           
-        }else if (codigo > other.codigo){
-        return 1;
-        }else {
+        } else if (codigo > other.codigo) {
+            return 1;
+        } else {
             return -1;
         }
-        
-        
-    }    
+    }
 
     @Override
     public String toString() {
         return "Producto{" + "codigo=" + codigo + ", descripcion=" + descripcion + '}';
     }
-    
-    
-    
 }
