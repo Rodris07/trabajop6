@@ -1,6 +1,9 @@
 
 
+import java.awt.Graphics;
+import java.awt.Image;
 import java.util.TreeSet;
+import javax.swing.ImageIcon;
 
 
 /**
@@ -31,7 +34,17 @@ public class MenuPrincipal extends javax.swing.JFrame {
 
         jMenu1 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        ImageIcon icon = new ImageIcon(getClass().getResource("/imagenes/fondo.jpg"));
+        Image image = icon.getImage();
+        jDesktopPane1 = new javax.swing.JDesktopPane(){
+
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            }
+
+        };
         jMenuBar1 = new javax.swing.JMenuBar();
         jM_Administración = new javax.swing.JMenu();
         jMenuItem_gestiondeproductos = new javax.swing.JMenuItem();
@@ -51,11 +64,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         jDesktopPane1.setLayout(jDesktopPane1Layout);
         jDesktopPane1Layout.setHorizontalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 994, Short.MAX_VALUE)
+            .addGap(0, 1012, Short.MAX_VALUE)
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 671, Short.MAX_VALUE)
+            .addGap(0, 677, Short.MAX_VALUE)
         );
 
         jM_Administración.setText("Administración");
@@ -104,15 +117,11 @@ public class MenuPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jDesktopPane1)
-                .addContainerGap())
+            .addComponent(jDesktopPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jDesktopPane1)
-                .addContainerGap())
+            .addComponent(jDesktopPane1)
         );
 
         pack();
@@ -124,9 +133,6 @@ public class MenuPrincipal extends javax.swing.JFrame {
         Gestión_de_Productos formgestion = new Gestión_de_Productos(supermercado);
         formgestion.setVisible(true);
         jDesktopPane1.add(formgestion);
-        
-        
-
     }//GEN-LAST:event_jMenuItem_gestiondeproductosActionPerformed
 
     private void jMenuItem_consutaporprecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_consutaporprecioActionPerformed
@@ -148,11 +154,12 @@ public class MenuPrincipal extends javax.swing.JFrame {
     private void jMenuItem_consultaporrubroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem_consultaporrubroActionPerformed
         jDesktopPane1.removeAll();
         jDesktopPane1.repaint();
-        Listado_Rubro formconsrubro = new Listado_Rubro();
+        Listado_Rubro formconsrubro = new Listado_Rubro(supermercado);
         formconsrubro.setVisible(true);
         jDesktopPane1.add(formconsrubro);
     }//GEN-LAST:event_jMenuItem_consultaporrubroActionPerformed
 
+    
     /**
      * @param args the command line arguments
      */

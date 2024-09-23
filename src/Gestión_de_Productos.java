@@ -386,6 +386,8 @@ public class Gestión_de_Productos extends javax.swing.JInternalFrame {
                     vaciarCamposProducto();
                     recargarTabla();
                     jBt_guardar.setEnabled(false);
+                    jCbx_Categoria.setSelectedIndex(0);
+                    desactivarTodosCampos();
                     JOptionPane.showMessageDialog(this, "Se agregó un producto (" + codigo + " - " + descripcion + ") a la lista");
                 } else {
                     JOptionPane.showMessageDialog(this, "Ya existe un producto con el código indicado");

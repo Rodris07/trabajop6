@@ -3,8 +3,6 @@ import java.util.TreeSet;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
-
-
 /**
  *
  * @author Franco
@@ -14,26 +12,28 @@ public class Listado_Precio extends javax.swing.JInternalFrame {
     private SupermercadodetodoSA supermercado;
     private TreeSet<Producto> listaProductos = new TreeSet();
     private DefaultTableModel modelo = new DefaultTableModel();
+
     /**
      * Creates new form Listado_Precio
      */
     public Listado_Precio(SupermercadodetodoSA supermercado) {
         initComponents();
-        this.supermercado= supermercado;
-        this.listaProductos= supermercado.getListaProductos();
+        this.supermercado = supermercado;
+        this.listaProductos = supermercado.getListaProductos();
         armarCabecera();
     }
-    public void mostrarProductos(Double preciovalor1, Double preciovalor2){
+
+    public void mostrarProductos(Double preciovalor1, Double preciovalor2) {
         limpiarTabla();
         for (Producto producto : listaProductos) {
-            
-            if (producto.getPrecio()>preciovalor1 && producto.getPrecio()<preciovalor2){
+
+            if (producto.getPrecio() >= preciovalor1 && producto.getPrecio() <= preciovalor2) {
                 modelo.addRow(new Object[]{producto.getCodigo(), producto.getDescripcion(), producto.getPrecio(), producto.getCategoria(), producto.getStock()});
             }
-                
+
         }
     }
-    
+
     private void armarCabecera() {
         modelo.addColumn("Codigo");
         modelo.addColumn("Descripcion");
@@ -42,6 +42,7 @@ public class Listado_Precio extends javax.swing.JInternalFrame {
         modelo.addColumn("Stock");
         jTable_listadoporprecio.setModel(modelo);
     }
+
     private void limpiarTabla() {
         int filas = modelo.getRowCount();
         for (int i = filas - 1; i >= 0; i--) {
@@ -152,21 +153,33 @@ public class Listado_Precio extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jTxt_valor1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxt_valor1KeyReleased
-        try{
-            Double preciovalor1= Double.parseDouble(jTxt_valor1.getText());
-            Double preciovalor2= Double.parseDouble(jTxt_valor2.getText());
-        
-        if ((!preciovalor1.equals(""))&&(!preciovalor2.equals(""))) {
-            mostrarProductos(preciovalor1,preciovalor2);
+        String textovalor1 = jTxt_valor1.getText();
+        String textovalor2 = jTxt_valor2.getText();
+        if ((!textovalor1.equals("")) && (!textovalor2.equals(""))) {
+            try {
+                double preciovalor1 = Double.parseDouble(textovalor1);
+                double preciovalor2 = Double.parseDouble(textovalor2);
+                mostrarProductos(preciovalor1, preciovalor2);
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Sólo se pueden ingresar números");
+            }
         }
-        }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(this, "Sólo se pueden ingresar números");
-        }
-        
     }//GEN-LAST:event_jTxt_valor1KeyReleased
 
     private void jTxt_valor2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTxt_valor2KeyReleased
-        
+        String textovalor1 = jTxt_valor1.getText();
+        String textovalor2 = jTxt_valor2.getText();
+        if ((!textovalor1.equals("")) && (!textovalor2.equals(""))) {
+            try {
+                double preciovalor1 = Double.parseDouble(textovalor1);
+                double preciovalor2 = Double.parseDouble(textovalor2);
+                mostrarProductos(preciovalor1, preciovalor2);
+
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(this, "Sólo se pueden ingresar números");
+            }
+        }
     }//GEN-LAST:event_jTxt_valor2KeyReleased
 
 
